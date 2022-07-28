@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% if 'create-post/' in request.path %}
+    {% block title %}Create Post{% endblock title %}
+{% else %}
+    {% block title2 %}Edit Post{% endblock title2 %}
+{% endif %}
+
+    {% block body %}
+        <h1>Create Post</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p | safe }}
+            <input type="submit" value="Post">
+        </form>
+
+
+    {% endblock body %}

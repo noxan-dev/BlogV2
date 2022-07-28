@@ -2,7 +2,7 @@ from rest_framework import serializers
 from blog.models import User, Post, Comments
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.HyperlinkedModelSerializer):
     posts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
@@ -18,18 +18,18 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class PostSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='author.username')
+class PostSerializer(serializers.HyperlinkedModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
     comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Post
-        fields = ['id', 'owner', 'title', 'subtitle', 'body', 'posted_at', 'img', 'comments']
+        fields = ['id', 'author', 'title', 'subtitle', 'body', 'posted_at', 'img', 'comments']
 
 
 class CommentsSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='user.username')
+    user = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = Comments
-        fields = ['id', 'owner', 'post_id', 'comment']
+        fields = ['id', 'user', 'comment', 'post']
