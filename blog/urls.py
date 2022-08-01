@@ -14,5 +14,7 @@ urlpatterns = [
     path('edit-post/<uuid:id>', views.EditPosts.as_view(), name='edit-post'),
     path('delete-post/<uuid:id>', views.DeletePosts.as_view(), name='delete-post'),
 
+    path('post/<uuid:id>', views.ViewPost.as_view(), name='post'),
+
     path('profile/<uuid:id>/<str:username>/', views.Profile.as_view(), name='profile'),
 ]

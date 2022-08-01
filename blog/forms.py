@@ -6,8 +6,8 @@ from django import forms
 
 class CustomLoginForm(AuthenticationForm):
     username = forms.CharField(label=False, widget=forms.TextInput(attrs={'class': 'form-control',
-                                                                          'name': 'email',
-                                                                          'placeholder': 'Email Address'
+                                                                          'name': 'username',
+                                                                          'placeholder': 'Username'
                                                                           }))
     password = forms.CharField(label=False, widget=forms.PasswordInput(attrs={'class': 'form-control',
                                                                               'name': 'password',
@@ -58,4 +58,16 @@ class CreatePostForm(ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
             'subtitle': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subtitle'}),
             'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Body'}),
+        }
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comments
+        fields = ('comment',)
+        labels = {
+            'comment': False,
+        }
+        widgets = {
+            'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Comment'}),
         }

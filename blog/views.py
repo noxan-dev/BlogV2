@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from django.contrib.auth.views import LoginView, FormView, TemplateView
-from django.views.generic.edit import UpdateView, DeleteView,CreateView
+from django.contrib.auth.views import LoginView, TemplateView
+from django.views.generic import UpdateView, DeleteView, CreateView, ListView, DetailView
 from django.urls import reverse_lazy
-from .forms import CustomLoginForm, CustomUserCreationForm, CreatePostForm
-from .models import User, Post
+from .forms import CustomLoginForm, CustomUserCreationForm, CreatePostForm, CommentForm
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from .models import User, Post, Comments
 
 # Create your views here.
 
@@ -11,23 +12,29 @@ from .models import User, Post
 class Login(LoginView):
     template_name = 'login.html'
     form_class = CustomLoginForm
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        return reverse_lazy('blog:home')
 
 
-class Register(FormView):
+class Register(CreateView):
     template_name = 'register.html'
     form_class = CustomUserCreationForm
+    success_url = reverse_lazy('blog:login')
+    redirect_authenticated_user = True
 
 
-class Home(TemplateView):
+class Home(ListView):
+    model = Post
     template_name = 'index.html'
+    paginate_by = 5
 
-    def get_context_data(self, **kwargs):
-        context = super(Home, self).get_context_data(**kwargs)
-        context['posts'] = Post.objects.all()
-        return context
+    def get_context_object_name(self, object_list):
+        return 'posts'
 
 
-class Profile(TemplateView):
+class Profile(LoginRequiredMixin, TemplateView):
     template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
@@ -36,9 +43,10 @@ class Profile(TemplateView):
         return context
 
 
-class CreatePosts(CreateView):
-    template_name = 'create-post.html'
+class CreatePosts(PermissionRequiredMixin, CreateView):
     model = Post
+    permission_required = 'is_staff'
+    template_name = 'create-post.html'
     fields = ['title', 'subtitle', 'body']
     success_url = reverse_lazy('blog:home')
 
@@ -49,17 +57,42 @@ class CreatePosts(CreateView):
         return super(CreatePosts, self).form_valid(form)
 
 
-class EditPosts(UpdateView):
+class EditPosts(PermissionRequiredMixin, UpdateView):
     model = Post
+    permission_required = 'is_staff'
     template_name = 'create-post.html'
     pk_url_kwarg = 'id'
     form_class = CreatePostForm
     success_url = reverse_lazy('blog:home')
 
 
-class DeletePosts(DeleteView):
+class DeletePosts(PermissionRequiredMixin, DeleteView):
     model = Post
+    permission_required = 'is_staff'
     pk_url_kwarg = 'id'
     success_url = reverse_lazy('blog:home')
+
+
+class ViewPost(DetailView):
+    model = Post
+    template_name = 'view-post.html'
+    pk_url_kwarg = 'id'
+
+    def get_context_data(self, **kwargs):
+        context = super(ViewPost, self).get_context_data()
+        context['post'] = Post.objects.get(id=self.kwargs.get('id'))
+        context['comments'] = Post.objects.get(id=self.kwargs.get('id')).comments.all()
+        context['form'] = CommentForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = self.request.user
+            obj.post = Post.objects.get(id=self.kwargs.get('id'))
+            obj.save()
+            return self.get(request, *args, **kwargs)
+        return self.get(request, *args, **kwargs)
 
 

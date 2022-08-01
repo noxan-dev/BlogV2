@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }}{% endblock title %}
+
+{% block body %}
+    <h1>{{ post.title }}</h1>
+    <small class="text-white">By: <a
+            href="{% url 'blog:profile' id=post.author.id username=post.author %}">{{ post.author }}</a>
+        - {{ post.posted_at }}</small>
+    <h3 class="text-white">{{ post.subtitle }}</h3>
+    <p>{{ post.body | safe }}</p>
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="text-white" for="comment">Comment</label>
+            {{ form.media }}
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    {% for comment in comments %}
+        <div class="card">
+            <div class="card-body text-white">
+                <h5 class="card-title text-black">{{ comment.user }}</h5>
+                <p class="card-text text-white">{{ comment.comment | safe }}</p>
+                <small class="text-black">{{ comment.created_at | timesince }}</small>
+                {% if request.user.is_staff %}
+                    <a href="">❌</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock body %}
