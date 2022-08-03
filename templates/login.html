@@ -2,12 +2,27 @@
 
 {% block title %}Login{% endblock title %}
 
-    {% block body %}
+{% block body %}
+    <div class="row g-3 text-center">
         <h1>Login</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input class="btn btn-primary" type="submit" value="Login" />
-        </form>
+        <div class="login d-flex justify-content-center">
+            <form method="post">
+                <div class="row g-3 m-0 text-center">
+                    {% csrf_token %}
+                    <div>
+                        {{ form.username }}
+                    </div>
+                    <div>
+                        {{ form.password }}
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" type="submit">Login</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <small class="text-white">Don't have an account? Don't worry you can <br>still read without it, or you can
+            register here <br><a href="{% url 'blog:register' %}">Register</a></small>
+    </div>
 
-    {% endblock body %}
+{% endblock body %}

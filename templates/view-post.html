@@ -4,32 +4,49 @@
 {% block title %}{{ post.title }}{% endblock title %}
 
 {% block body %}
-    <h1>{{ post.title }}</h1>
-    <small class="text-white">By: <a
-            href="{% url 'blog:profile' id=post.author.id username=post.author %}">{{ post.author }}</a>
-        - {{ post.posted_at }}</small>
-    <h3 class="text-white">{{ post.subtitle }}</h3>
-    <p>{{ post.body | safe }}</p>
-    <form method="post" action="">
-        {% csrf_token %}
-        <div class="form-group">
-            <label class="text-white" for="comment">Comment</label>
-            {{ form.media }}
-            {{ form.as_p }}
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    {% for comment in comments %}
-        <div class="card">
-            <div class="card-body text-white">
-                <h5 class="card-title text-black">{{ comment.user }}</h5>
-                <p class="card-text text-white">{{ comment.comment | safe }}</p>
-                <small class="text-black">{{ comment.created_at | timesince }}</small>
-                {% if request.user.is_staff %}
-                    <a href="">❌</a>
-                {% endif %}
+    <section class="my-5">
+        <div class="row gy-3">
+            <div class="post-section">
+                <div class="">
+                    <h1>{{ post.title }}</h1>
+                    <small class="text-white">By: <a class="username"
+                            href="{% url 'blog:profile' id=post.author.id username=post.author %}">{{ post.author }}</a>
+                        - {{ post.posted_at }}</small>
+                    <h3 class="text-white">{{ post.subtitle }}</h3>
+                    <p>{{ post.body | safe }}</p>
+                </div>
+            </div>
+            <div class="new-comment">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <h2 class="text-white">Comment</h2>
+                        {{ form.media }}
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="posted-comment">
+                <div class="row row-cols-1 gy-3 w-auto m-0">
+                    {% for comment in comments %}
+                        <div class="card col">
+                            <div class="card-body row text-white">
+                                <h5 class="card-title col-6 text-black"><a class="username"
+                                        href="{% url 'blog:profile' id=comment.user.id username=comment.user %}">{{ comment.user }}</a>
+                                </h5>
+                                {% if request.user.is_staff %}
+                                    <a class="col-6 d-flex justify-content-end" href="">❌</a>
+                                {% endif %}
+                                <p class="card-text text-white">{{ comment.comment | safe }}</p>
+                                <small class="text-black">{{ comment.created_at | timesince }}</small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    {% endfor %}
+
+    </section>
 
 {% endblock body %}

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http.response import HttpResponseRedirect
 from django.contrib.auth.views import LoginView, TemplateView
 from django.views.generic import UpdateView, DeleteView, CreateView, ListView, DetailView
 from django.urls import reverse_lazy
@@ -92,7 +93,9 @@ class ViewPost(DetailView):
             obj.user = self.request.user
             obj.post = Post.objects.get(id=self.kwargs.get('id'))
             obj.save()
-            return self.get(request, *args, **kwargs)
-        return self.get(request, *args, **kwargs)
+            return HttpResponseRedirect(reverse_lazy('blog:post', kwargs={'id': self.kwargs.get('id')}))
+        else:
+            pass
+        return HttpResponseRedirect(reverse_lazy('blog:home'))
 
 

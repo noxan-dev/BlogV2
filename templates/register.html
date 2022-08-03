@@ -2,12 +2,62 @@
 
 {% block title %}Register{% endblock title %}
 
-    {% block body %}
+{% block body %}
+    <div class="row gy-3 text-center">
         <h1>Register</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input class="btn btn-primary" type="submit" value="Register">
-        </form>
+        <div class="errorlist">
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="register d-flex justify-content-center">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row gy-3 text-center">
+                    <div class="col-12">
+                        {{ form.username }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            {% for error in form.email.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col-12">
+                        {{ form.first_name }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.last_name }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.password1 }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.password2 }}
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit">Register</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <small class="text-white">Have an account? Why not login. <br><a href="{% url 'blog:login' %}">Login</a></small>
+    </div>
 
-    {% endblock body %}
+{% endblock body %}
+

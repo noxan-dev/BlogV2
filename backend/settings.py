@@ -186,3 +186,10 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': 'auto',
+        'skin': 'moono-lisa',
+    }
+}

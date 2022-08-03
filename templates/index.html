@@ -11,58 +11,61 @@
             </div>
         </div>
     </section>
-    <section id="latest-posts">
-        <div id="">
-            <h1 class="text-5xl">Latest Posts</h1>
-            {% for post in posts %}
-                <div class="">
-                    <div class="row gy-2 pb-4">
-                        <h2><a href="{% url 'blog:post' post.id %}">{{ post.title | title }}</a></h2>
-                        <h4>{{ post.subtitle }}</h4>
-                        <div class="post-body">
-                            {{ post.body | safe | truncatewords:25 }}
-                        </div>
-                        <small class="text-white">By: {{ post.author }} on {{ post.posted_at }}</small>
-                        <div>
-                            {% if request.user.is_staff %}
-                                <a class="btn btn-primary" href="{% url 'blog:edit-post' post.id %}">Edit</a>
-                                <a href="{% url 'blog:delete-post' post.id %}">❌</a>
-                            {% endif %}
+    <section id="home">
+        <div class="row gy-3">
+            <div class="latest-posts">
+                <h1 class="text-5xl">Latest Posts</h1>
+                {% for post in posts %}
+                    <div class="posts">
+                        <div class="row gy-2">
+                            <h2><a href="{% url 'blog:post' post.id %}">{{ post.title | title }}</a></h2>
+                            <h4>{{ post.subtitle }}</h4>
+                            <div class="post-body">
+                                {{ post.body | safe | truncatewords:25 }}
+                            </div>
+                            <small class="text-white">By: <a href="{% url 'blog:profile' id=post.author.id username=post.author %}" class="username">{{ post.author }}</a> on {{ post.posted_at }}</small>
+                            <div>
+                                {% if request.user.is_staff %}
+                                    <a class="btn btn-primary" href="{% url 'blog:edit-post' post.id %}">Edit</a>
+                                    <a href="{% url 'blog:delete-post' post.id %}">❌</a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="text-white">
-            <div class="btn-group btn-group-sm" role="group" aria-label="Small Item pagination">
-                {% if page_obj.has_previous %}
-                    <a class="btn btn-outline-primary" href="?page=1">&laquo; First</a>
-                    <a class="btn btn-outline-primary" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                {% endif %}
-
-                {% for page_number in page_obj.paginator.page_range %}
-                    {% if page_obj.number == page_number %}
-                        <button class="btn btn-outline-primary active">
-                            <span>{{ page_number }} <span class="sr-only"></span></span>
-                        </button>
-                    {% else %}
-                        <a href="?page={{ page_number }}" class="btn btn-outline-primary">
-                            {{ page_number }}
-                        </a>
-                    {% endif %}
                 {% endfor %}
+            </div>
 
-                {% if page_obj.has_next %}
-                    <a class="btn btn-outline-primary" href="?page={{ page_obj.next_page_number }}">&raquo; Next</a>
-                    <a class="btn btn-outline-primary" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-                {% endif %}
+            <div class="pagination-btn">
+                <div class="btn-group btn-group-sm" role="group" aria-label="Small Item pagination">
+                    {% if page_obj.has_previous %}
+                        <a class="btn btn-outline-primary" href="?page=1">&laquo; First</a>
+                        <a class="btn btn-outline-primary" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    {% endif %}
+
+                    {% for page_number in page_obj.paginator.page_range %}
+                        {% if page_obj.number == page_number %}
+                            <button class="btn btn-outline-primary active">
+                                <span>{{ page_number }} <span class="sr-only"></span></span>
+                            </button>
+                        {% else %}
+                            <a href="?page={{ page_number }}" class="btn btn-outline-primary">
+                                {{ page_number }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a class="btn btn-outline-primary" href="?page={{ page_obj.next_page_number }}">&raquo; Next</a>
+                        <a class="btn btn-outline-primary" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="new-post">
+                <a href="{% url 'blog:create-post' %}">
+                    <button class="btn btn-primary">New Post</button>
+                </a>
             </div>
         </div>
-        <div class="new-post">
-            <a href="{% url 'blog:create-post' %}">
-            <button class="btn btn-primary">New Post</button>
-            </a>
-        </div>
-
     </section>
+
 {% endblock body %}
