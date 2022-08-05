@@ -7,15 +7,7 @@
 
 body {
     font-family: 'Playfair Display', serif;
-    background-color: #242629;
-}
-
-#background-header {
-    background-image: url("/static/blog/img/bg.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 75vh;
-    text-align: center;
+    background-color: #16161a;
 }
 
 #latest-posts {
@@ -60,4 +52,9 @@ ion-icon {
 
 .username {
     text-decoration: none;
+}
+
+.card {
+    background-color: #242629;
+
 }

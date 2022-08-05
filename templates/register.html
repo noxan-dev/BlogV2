@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}Register{% endblock title %}
 
@@ -24,33 +25,23 @@
         <div class="register d-flex justify-content-center">
             <form method="post">
                 {% csrf_token %}
-                <div class="row gy-3 text-center">
-                    <div class="col-12">
-                        {{ form.username }}
+                <div class="text-center">
+                    <div class="">
+                        {{ form.username | as_crispy_field }}
                     </div>
-                    <div class="col-12">
-                        {{ form.email }}
-                        {% if form.email.errors %}
-                            {% for error in form.email.errors %}
-                                <div class="alert alert-danger">
-                                    <strong>{{ error|escape }}</strong>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
+                    <div class="">
+                        {{ form.first_name | as_crispy_field }}
                     </div>
-                    <div class="col-12">
-                        {{ form.first_name }}
+                    <div class="">
+                        {{ form.last_name | as_crispy_field }}
                     </div>
-                    <div class="col-12">
-                        {{ form.last_name }}
+                    <div class="">
+                        {{ form.password1 | as_crispy_field }}
                     </div>
-                    <div class="col-12">
-                        {{ form.password1 }}
+                    <div class="">
+                        {{ form.password2 | as_crispy_field }}
                     </div>
-                    <div class="col-12">
-                        {{ form.password2 }}
-                    </div>
-                    <div class="col-12">
+                    <div class="">
                         <button class="btn btn-primary" type="submit">Register</button>
                     </div>
                 </div>

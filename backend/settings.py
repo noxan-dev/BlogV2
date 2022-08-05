@@ -42,7 +42,13 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'ckeditor',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -188,8 +194,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 
 CKEDITOR_CONFIGS = {
-    'default': {
+    'post-form': {
+        'toolbar': 'full',
         'width': 'auto',
         'skin': 'moono-lisa',
+        # 'extraPlugins': 'wordcount',
+    },
+    'comment-form': {
+        'width': 'auto',
+        'height': '200',
+        'skin': 'moono-lisa',
+        # 'extraPlugins': 'wordcount',
     }
 }

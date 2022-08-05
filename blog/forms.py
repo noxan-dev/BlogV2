@@ -2,18 +2,12 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm, Authenti
 from django.forms import ModelForm
 from .models import User, Post, Comments
 from django import forms
+from ckeditor.widgets import CKEditorWidget
 
 
 class CustomLoginForm(AuthenticationForm):
-    username = forms.CharField(label=False, widget=forms.TextInput(attrs={'class': 'form-control',
-                                                                          'name': 'username',
-                                                                          'placeholder': 'Username'
-                                                                          }))
-    password = forms.CharField(label=False, widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                                              'name': 'password',
-                                                                              'placeholder': 'Password',
-                                                                              'autocomplete': 'new-password',
-                                                                              }))
+    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -41,35 +35,29 @@ class CustomUserCreationForm(UserCreationForm):
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email Address'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
-            'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
-            'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'})
         }
 
 
 class CreatePostForm(ModelForm):
+    body = forms.CharField(label=False, max_length=150, min_length=5,
+                           widget=CKEditorWidget(config_name='post-form', attrs={'placeholder': 'Body'}))
+
+    title = forms.CharField(label='Title', max_length=50, min_length=5,
+                            widget=forms.TextInput(attrs={'placeholder': 'Title'}))
+
+    subtitle = forms.CharField(label='Subtitle', max_length=100, min_length=5, required=False,
+                               widget=forms.TextInput(attrs={'placeholder': 'Subtitle'}))
+
     class Meta:
         model = Post
         fields = ('title', 'subtitle', 'body')
-        labels = {
-            'title': False,
-            'subtitle': False,
-            'body': False,
-        }
-        widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
-            'subtitle': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subtitle'}),
-            'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Body'}),
-        }
 
 
 class CommentForm(ModelForm):
+    comment = forms.CharField(label=False, max_length=150, min_length=5,
+                              widget=CKEditorWidget(config_name='comment-form', attrs={'placeholder': 'Comment'}))
+
     class Meta:
         model = Comments
         fields = ('comment',)
-        labels = {
-            'comment': False,
-        }
-        widgets = {
-            'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Comment'}),
-        }

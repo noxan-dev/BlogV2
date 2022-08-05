@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from .forms import CustomLoginForm, CustomUserCreationForm, CreatePostForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .models import User, Post, Comments
+from django.contrib import messages
 
 # Create your views here.
 
@@ -29,7 +30,7 @@ class Register(CreateView):
 class Home(ListView):
     model = Post
     template_name = 'index.html'
-    paginate_by = 5
+    paginate_by = 4
 
     def get_context_object_name(self, object_list):
         return 'posts'
@@ -48,12 +49,15 @@ class CreatePosts(PermissionRequiredMixin, CreateView):
     model = Post
     permission_required = 'is_staff'
     template_name = 'create-post.html'
-    fields = ['title', 'subtitle', 'body']
+    form_class = CreatePostForm
     success_url = reverse_lazy('blog:home')
 
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.author = self.request.user
+        obj.title = form.cleaned_data['title']
+        obj.subtitle = form.cleaned_data['subtitle']
+        obj.body = form.cleaned_data['body']
         obj.save()
         return super(CreatePosts, self).form_valid(form)
 
@@ -61,7 +65,7 @@ class CreatePosts(PermissionRequiredMixin, CreateView):
 class EditPosts(PermissionRequiredMixin, UpdateView):
     model = Post
     permission_required = 'is_staff'
-    template_name = 'create-post.html'
+    template_name = 'edit-post.html'
     pk_url_kwarg = 'id'
     form_class = CreatePostForm
     success_url = reverse_lazy('blog:home')
@@ -88,6 +92,12 @@ class ViewPost(DetailView):
 
     def post(self, request, *args, **kwargs):
         form = CommentForm(request.POST)
+        if len(request.POST.get('comment')) > 150:
+            messages.error(request, 'The word count should not exceed 150 characters')
+            return HttpResponseRedirect(request.path)
+        elif len(request.POST.get('comment')) < 5:
+            messages.error(request, 'Comments should be at least 5 characters long')
+            return HttpResponseRedirect(request.path)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = self.request.user
@@ -95,7 +105,6 @@ class ViewPost(DetailView):
             obj.save()
             return HttpResponseRedirect(reverse_lazy('blog:post', kwargs={'id': self.kwargs.get('id')}))
         else:
-            pass
-        return HttpResponseRedirect(reverse_lazy('blog:home'))
+            return HttpResponseRedirect(reverse_lazy('blog:post', kwargs={'id': self.kwargs.get('id')}))
 
 

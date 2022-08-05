@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from uuid import uuid4
 from ckeditor.fields import RichTextField
+from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
@@ -18,7 +19,9 @@ class Comments(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     user = models.ForeignKey('blog.User', on_delete=models.CASCADE, null=True, related_name='comments')
     post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, related_name='comments')
-    comment = RichTextField(max_length=150, blank=False, null=True, validators=[MaxLengthValidator(150), MinLengthValidator(5)])
+    comment = RichTextField(max_length=150, config_name='comment-form', blank=False, null=True,
+                            validators=[MaxLengthValidator(150, message=_('You have exceeded the amount of words')),
+                                        MinLengthValidator(5)])
 
     class Meta:
         verbose_name_plural = 'Comments'
@@ -33,7 +36,8 @@ class Post(models.Model):
                                related_name='posts')
     title = models.CharField(max_length=50, blank=False, null=True)
     subtitle = models.CharField(max_length=100, blank=True)
-    body = RichTextField(blank=False, null=True, validators=[MaxLengthValidator(1000), MinLengthValidator(10)])
+    body = RichTextField(config_name='post-form', blank=False, null=True,
+                         validators=[MaxLengthValidator(1000), MinLengthValidator(10)])
     posted_at = models.DateTimeField(auto_now_add=True, null=True)
     img = models.ImageField(upload_to='blog/img/', null=True, blank=True)
 
