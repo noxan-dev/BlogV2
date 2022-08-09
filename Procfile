@@ -1,1 +1,1 @@
-web: gunicorn backend/wsgi.py
+web: gunicorn BlogV2.wsgi
