@@ -17,11 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
 from api.views import MyTokenObtainPairView
-from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='/blog/home')),
     path('blog/', include('blog.urls'), name='blog'),
     path('api/', include('api.urls')),
     path('api-auth/', include('rest_framework.urls')),
