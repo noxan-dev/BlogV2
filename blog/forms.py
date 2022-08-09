@@ -6,8 +6,8 @@ from ckeditor.widgets import CKEditorWidget
 
 
 class CustomLoginForm(AuthenticationForm):
-    username = forms.CharField(label='Username', widget=forms.TextInput(attrs={'placeholder': 'Username'}))
-    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    username = forms.CharField(label=False, widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    password = forms.CharField(label=False, widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
 
 class CustomUserCreationForm(UserCreationForm):
