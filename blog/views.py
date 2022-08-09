@@ -36,8 +36,9 @@ class Home(ListView):
         return 'posts'
 
 
-class Profile(LoginRequiredMixin, TemplateView):
+class Profile(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
     template_name = 'profile.html'
+    permission_required = 'is_staff'
 
     def get_context_data(self, **kwargs):
         context = super(Profile, self).get_context_data(**kwargs)
