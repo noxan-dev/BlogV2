@@ -1,0 +1,60 @@
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Playfair Display', serif;
+    background-color: #16161a;
+}
+
+#latest-posts {
+    background-color: #242629;
+    padding: 20px;
+}
+
+.navbar {
+    --bs-navbar-color: #fff;
+    --bs-navbar-active-color: rgb(156 163 175);;
+    --bs-navbar-hover-color: rgb(156 163 175);
+}
+
+h1 {
+    color: #fffffe;
+    font-size: 4.2rem;
+    font-weight: 900;
+}
+
+h2 {
+    color: #fffffe;
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+h4 {
+    color: #fffffe;
+    font-size: 1.50rem;
+    font-weight: 900;
+}
+
+p {
+    color: #94a1b2;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+ion-icon {
+    font-size: 2.5rem;
+    pointer-events: none;
+}
+
+.username {
+    text-decoration: none;
+}
+
+.card {
+    background-color: #242629;
+
+}
