@@ -45,8 +45,6 @@ INSTALLED_APPS = [
     'ckeditor',
     'crispy_forms',
     'crispy_bootstrap5',
-    'whitenoise.runserver_nostatic',
-    'django.contrib.staticfiles',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
