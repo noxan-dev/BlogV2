@@ -1,1 +1,1 @@
-web: gunicorn -w 3 BlogV2.wsgi -b 0.0.0.0:$PORT
+web: gunicorn BlogV2.wsgi --bind 0.0.0.0:$PORT
