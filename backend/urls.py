@@ -21,8 +21,7 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='/blog/home')),
-    path('blog/', include('blog.urls'), name='blog'),
+    path('', include('blog.urls'), name='blog'),
     # path('api/', include('api.urls')),
     # path('api-auth/', include('rest_framework.urls')),
     # path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -40,7 +40,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CreatePostForm(ModelForm):
-    body = forms.CharField(label=False, max_length=150, min_length=5,
+    body = forms.CharField(label=False, max_length=1000, min_length=5,
                            widget=CKEditorWidget(config_name='post-form', attrs={'placeholder': 'Body'}))
 
     title = forms.CharField(label='Title', max_length=50, min_length=5,
