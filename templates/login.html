@@ -7,13 +7,6 @@
     <div class="row gy-3 text-center">
         <div class="errorlist">
             {% if form.errors %}
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
                 {% for error in form.non_field_errors %}
                     <div class="alert alert-danger">
                         <strong>{{ error|escape }}</strong>
@@ -23,7 +16,7 @@
         </div>
         <h1>Login</h1>
         <div class="login d-flex justify-content-center">
-            <form method="post">
+            <form method="post" novalidate>
                 {% csrf_token %}
                 <div class="text-white text-center">
                     <div class="">
