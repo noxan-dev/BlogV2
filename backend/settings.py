@@ -27,7 +27,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', config('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['chaimsblog-v2.herokuapp.com', '127.0.0.1', 'chaimmalek.dev']
+ALLOWED_HOSTS = ['chaimsblog-v2.herokuapp.com', '127.0.0.1', '.chaimmalek.dev']
 
 # Application definition
 INSTALLED_APPS = [
