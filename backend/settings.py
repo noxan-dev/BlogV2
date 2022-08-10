@@ -191,6 +191,7 @@ USE_TZ = True
 
 LOGIN_URL = 'blog:login'
 LOGOUT_REDIRECT_URL = '/'
+CSRF_TRUSTED_ORIGINS = ['.chaimmalek.dev', '127.0.0.1']
 
 STATIC_URL = '/static/'
 
